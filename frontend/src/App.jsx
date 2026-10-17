@@ -54,12 +54,15 @@ function App() {
   }
 
   return (<main> 
-    <form>
+    <form onSubmit={(e) =>{
+      e.preventDefault();
+      handleAddTask();
+    }}>
       <input className="input-task" type="text" placeholder='Enter your task'
       value={taskDescription}
       onChange={(e) => setTaskDescription(e.target.value)} 
       />
-      <button type="button" onClick={handleAddTask}>Add Task</button>
+      <button type="submit">Add Task</button>
     </form>
 
     <div>
