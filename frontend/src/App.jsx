@@ -13,10 +13,20 @@ function App() {
 
   var taskItems = tasks.map(task => 
     <li key={task.id}>
-    <input type="checkbox" name={task.title} id={task.id} />
-    <label htmlFor={task.title}>{task.title}</label>
+    <input type="checkbox" name={task.title} id={task.id} switch onChange={(e) => handleToggleTask(task.id, e.target.checked)}/>
+    <label htmlFor={task.id} style={{textDecoration: task.completed? "line-through": "none"}}>{task.title}</label>
     </li>
   );
+
+  function handleToggleTask(id, isChecked) {
+  setTasks(prevTasks =>
+    prevTasks.map(task =>
+      task.id === id
+        ? { ...task, completed: isChecked }
+        : task
+    )
+  );
+}
 
   // function handleSetId(){
   //   setId(id+1);
@@ -33,7 +43,8 @@ function App() {
 
     setTasks([...tasks, {
        "id": Date.now(),
-       "title": task
+       "title": task,
+       "completed": false
     }]) // spread operator, old tasks jastaako testai lyauxa
   }
 
