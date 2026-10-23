@@ -19,3 +19,11 @@ class TaskUpdate(BaseModel): # update maa optional hunxan, so we create separate
     priority: Literal["low", "medium", "high"] = "low"
     completed: bool = False
     estimated_minutes: Annotated[int | None, Field(ge=1, le=480)] = None
+    
+class SearchFilter(BaseModel):
+    search_subject: str | None = None
+    completed_status: bool | None = None
+    search: str | None = None
+    # search_priority: str | None = None
+    # search_priority: str | None = None
+    
