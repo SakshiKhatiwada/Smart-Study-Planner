@@ -3,8 +3,20 @@ from fastapi.responses import JSONResponse, Response
 from utils import find_task, write_tasks, read_tasks
 from schema import TaskData, TaskUpdate
 from uuid import uuid4
+from pathlib import Path
+from contextlib import asynccontextmanager
+import os
 
-app = FastAPI()
+TASKS_FILE = Path(__file__).with_name("tasks.json")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Runs when the API starts
+    if TASKS_FILE.exists():
+        os.remove(TASKS_FILE) 
+    yield
+    
+app = FastAPI(lifespan=lifespan)
 
 @app.get("/",status_code=200)
 def home_page():
@@ -44,6 +56,6 @@ def delete_task(task_id):
     task = find_task(tasks, task_id)
     tasks.remove(task)
     write_tasks(tasks)
-    task["message"] = "task deleted successfully"
+    # task["message"] = "task deleted successfully"
     # return task
     return Response(status_code=204)
