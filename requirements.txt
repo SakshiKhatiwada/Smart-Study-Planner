@@ -1,0 +1,1 @@
+fastapi[standard] # fastapi 0.162.0

@@ -40,6 +40,28 @@ def list_tasks(filter: Annotated[SearchFilter, Query()], params: Annotated[Query
     filtered_tasks = filter_tasks(filter,tasks)
     queried_tasks = query_params(params, filtered_tasks)
     return queried_tasks
+
+@app.get("/tasks/summary", status_code=200) # yo maathi rakhnu parxa, natra task_id wala sita conflict hunxa
+# Route tip: declare /tasks/summary before /tasks/{task_id}, so FastAPI does not interpret the word “summary” as an ID.
+def get_summary():
+    tasks = read_tasks()
+    summary = {}
+    
+    summary["total_tasks"] = int(len(tasks))
+    # summary["completed_tasks"] =  len(
+    #     [task for task in tasks
+    #      if task["completed_tasks"] == True]
+    # )
+    
+    summary["completed_tasks"] = int(sum(task['completed'] for task in tasks))
+    
+    summary["pending_tasks"] = summary["total_tasks"] - summary["completed_tasks"] 
+    
+    summary["total_estimated_minutes"] = sum(task['estimated_minutes'] for task in tasks)
+    
+    summary["remaining_estimated_minutes"] = sum(task["estimated_minutes"] for task in tasks if task['completed'] == False)
+    
+    return summary
     
 @app.get("/tasks/{task_id}", status_code=200)
 def retrieve_task(task_id:int): # type hinting here because esle frontend bata data paauxa
