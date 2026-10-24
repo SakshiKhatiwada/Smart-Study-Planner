@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from schema import SearchFilter, QueryParameterSchema
+from app.schemas.task import SearchFilter, QueryParameterSchema
 import json
 from pathlib import Path
 
@@ -70,7 +70,7 @@ def filter_tasks(filter: SearchFilter, results):
     #     ]
     # return results
 
-def query_params(params, results):
+def query_params(params: QueryParameterSchema, results):
     if params.priority is not None:
        results = [
             task for task in results
