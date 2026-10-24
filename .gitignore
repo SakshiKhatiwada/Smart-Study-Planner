@@ -56,4 +56,4 @@ venv/
 # MacOS file
 .DS_Store
 
-backend/tasks.json
+backend/app/data/tasks.json

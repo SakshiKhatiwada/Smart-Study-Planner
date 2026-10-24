@@ -3,7 +3,7 @@ from app.schemas.task import SearchFilter, QueryParameterSchema
 import json
 from pathlib import Path
 
-TASKS_FILE = Path(__file__).with_name("tasks.json")
+TASKS_FILE = Path(__file__).parent / "data" / "tasks.json"
 
 def find_task(tasks, task_id):
     # Search- Linear
