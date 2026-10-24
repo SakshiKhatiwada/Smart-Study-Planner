@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Query
 from typing import Annotated
 from fastapi.responses import Response
-from utils import find_task, write_tasks, read_tasks
-from schema import TaskData, TaskUpdate, SearchFilter, TaskPutUpdate
+from utils import find_task, write_tasks, read_tasks, filter_tasks, query_params
+from schema import TaskData, TaskUpdate, SearchFilter, TaskPutUpdate, QueryParameterSchema
 # from uuid import uuid4
 from pathlib import Path
 from contextlib import asynccontextmanager
@@ -10,15 +10,16 @@ import json
 
 TASKS_FILE = Path(__file__).with_name("tasks.json")
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # Runs when the API starts
-    if TASKS_FILE.exists():
-        with open(TASKS_FILE, "w") as file:
-            json.dump([], file) 
-    yield
+# @asynccontextmanager # if we want to clear the file data at every startup
+# async def lifespan(app: FastAPI):
+#     # Runs when the API starts
+#     if TASKS_FILE.exists():
+#         with open(TASKS_FILE, "w") as file:
+#             json.dump([], file) 
+#     yield
     
-app = FastAPI(lifespan=lifespan)
+# app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 
 @app.get("/",status_code=200)
 def home_page():
@@ -34,41 +35,12 @@ def add_tasks(data: TaskData):
     return task
 
 @app.get("/tasks", status_code=200)
-def list_tasks(filter: Annotated[SearchFilter, Query()]):
-    results = read_tasks()
-    if filter.search_subject is not None:
-        results = [
-            task for task in results
-            if filter.search_subject.lower() in task["subject"].lower()
-        ]
-        
-    if filter.completed_status is not None:
-        results = [
-            task for task in results 
-            if filter.completed_status == task['completed']
-        ]
-        
-    if filter.search is not None:
-        results = [
-            task for task in results 
-            if filter.search.lower() in task["title"]
-        ]
-        
-    return results
-
-    # if filter.search_title is not None:
-    #     results = [
-    #         task for task in results 
-    #         if filter.search_title.lower() == task['title'].lower()
-    #     ]
-        
-    # if filter.search_priority is not None:
-    #     results = [
-    #         task for task in results 
-    #         if filter.search_priority == task['priority']
-    #     ]
-    # return results
-
+def list_tasks(filter: Annotated[SearchFilter, Query()], params: Annotated[QueryParameterSchema, Query()]):
+    tasks = read_tasks()
+    filtered_tasks = filter_tasks(filter,tasks)
+    queried_tasks = query_params(params, filtered_tasks)
+    return queried_tasks
+    
 @app.get("/tasks/{task_id}", status_code=200)
 def retrieve_task(task_id:int): # type hinting here because esle frontend bata data paauxa
     tasks = read_tasks()
