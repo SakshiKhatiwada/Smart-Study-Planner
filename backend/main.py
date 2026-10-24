@@ -2,7 +2,7 @@ from fastapi import FastAPI, Query
 from typing import Annotated
 from fastapi.responses import Response
 from utils import find_task, write_tasks, read_tasks
-from schema import TaskData, TaskUpdate, SearchFilter
+from schema import TaskData, TaskUpdate, SearchFilter, TaskPutUpdate
 # from uuid import uuid4
 from pathlib import Path
 from contextlib import asynccontextmanager
@@ -82,10 +82,18 @@ def update_task(task_id: int, data: TaskUpdate):
     write_tasks(tasks)
     return task
 
+@app.put("/tasks/{task_id}", status_code=200)
+def put_task(task_id: int, data: TaskPutUpdate):
+    tasks = read_tasks()
+    task = find_task(tasks, task_id)
+    task.update({"completed": False, **data.model_dump(exclude=['completed'])})
+    write_tasks(tasks)
+    return task
+
 # @app.delete("/tasks/{task_id}")
 @app.delete("/tasks/{task_id}", status_code=204) # 204 no content
 # status code explicitly lekhe swagger docs maa response body ko laagi thaau nai naaaune raixa.
-def delete_task(task_id):
+def delete_task(task_id: int):
     tasks = read_tasks()
     task = find_task(tasks, task_id)
     tasks.remove(task)

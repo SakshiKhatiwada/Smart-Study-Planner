@@ -5,7 +5,6 @@ from typing import Annotated
 # from uuid import uuid4
 
 class TaskData(BaseModel):
-    # id: str
     title: Annotated[str, Field(min_length=3)]
     subject: Annotated[str, Field(min_length=2)]
     priority: Literal["low", "medium", "high"] = "low"
@@ -13,7 +12,6 @@ class TaskData(BaseModel):
     estimated_minutes: Annotated[int, Field(ge=1, le=480)]
     
 class TaskUpdate(BaseModel): # update maa optional hunxan, so we create separately
-    # id: str | None = None
     title: Annotated[str | None, Field(min_length=3)] = None
     subject: Annotated[str | None, Field(min_length=2)] = None
     priority: Literal["low", "medium", "high"] = "low"
@@ -27,3 +25,8 @@ class SearchFilter(BaseModel):
     # search_priority: str | None = None
     # search_priority: str | None = None
     
+class TaskPutUpdate(BaseModel):
+    title: Annotated[str, Field(min_length=3)]
+    subject: Annotated[str, Field(min_length=2)]
+    priority: Literal["low", "medium", "high"]
+    estimated_minutes: Annotated[int, Field(ge=1, le=480)]

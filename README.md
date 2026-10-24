@@ -57,7 +57,7 @@ React updates the displayed task list.
 ```
 [
   {
-    "id": "c4de093b-4008-4b67-83c4-aa86a86476e1",
+    "id":1,
     "title": "homework",
     "subject": "string",
     "priority": "low",
@@ -65,7 +65,7 @@ React updates the displayed task list.
     "estimated_minutes": 1
   },
   {
-    "id": "301d4963-2038-4cbc-86de-1d2f5d4b0f33",
+    "id": 2,
     "title": "build calculator",
     "subject": "python",
     "priority": "high",
@@ -73,7 +73,7 @@ React updates the displayed task list.
     "estimated_minutes": 90
   },
   {
-    "id": "2ab3960f-b4aa-448f-85a1-263b134e9432",
+    "id": 3,
     "title": "revise algebra",
     "subject": "maths",
     "priority": "medium",
@@ -81,7 +81,7 @@ React updates the displayed task list.
     "estimated_minutes": 45
   },
   {
-    "id": "c16b803d-9272-41bf-890c-ea87f5201f01",
+    "id": 4,
     "title": "read api docs",
     "subject": "fastapi",
     "priority": "high",
@@ -89,7 +89,7 @@ React updates the displayed task list.
     "estimated_minutes": 60
   },
   {
-    "id": "8b741b56-7472-4aae-9fa9-2800520cffe1",
+    "id": 5,
     "title": "practice loops",
     "subject": "python",
     "priority": "low",
@@ -97,7 +97,7 @@ React updates the displayed task list.
     "estimated_minutes": 30
   },
   {
-    "id": "2f6508bf-4c93-485e-8cc5-de07fb51708d",
+    "id": 6,
     "title": "solve equations",
     "subject": "math",
     "priority": "high",
